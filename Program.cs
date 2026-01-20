@@ -83,7 +83,6 @@ class Program
         Console.WriteLine("🔍 ПОИСК САМОГО БОЛЬШОГО ФАЙЛА");
         Console.WriteLine(new string('=', 50));
 
-        // Ввод пути от пользователя
         string directoryPath = GetDirectoryPathFromUser();
 
         if (string.IsNullOrEmpty(directoryPath))
@@ -95,13 +94,11 @@ class Program
         Console.WriteLine($"\n📁 Выбранная директория: {directoryPath}");
         Console.WriteLine(new string('-', 50));
 
-        // Ввод маски поиска
         Console.Write("\nВведите маску поиска (например, *.txt, *.*) [*.*]: ");
         string pattern = Console.ReadLine();
         if (string.IsNullOrWhiteSpace(pattern))
             pattern = "*.*";
 
-        // Ввод лимита файлов
         Console.Write("\nВведите максимальное количество файлов (0 - без ограничений) [0]: ");
         string maxFilesInput = Console.ReadLine();
         int maxFiles = 0;
@@ -117,7 +114,6 @@ class Program
 
         Console.WriteLine("\n🔍 Начинаю поиск файлов...");
 
-        // Поиск файлов
         var searcher = new FileSearcher();
         var foundFiles = new List<FileInfo>();
         int fileCount = 0;
@@ -128,7 +124,6 @@ class Program
             var file = new FileInfo(e.FilePath);
             foundFiles.Add(file);
 
-            // Показываем прогресс
             if (fileCount % 10 == 0)
                 Console.Write($"[{fileCount}] ");
             else
@@ -150,13 +145,11 @@ class Program
 
             if (foundFiles.Count > 0)
             {
-                // Показываем статистику
                 Console.WriteLine("\n📊 СТАТИСТИКА:");
                 Console.WriteLine($"Всего файлов: {foundFiles.Count}");
                 Console.WriteLine($"Общий размер: {foundFiles.Sum(f => f.Length):N0} байт");
                 Console.WriteLine($"Средний размер: {foundFiles.Average(f => f.Length):N0} байт");
 
-                // Используем GetMax для поиска самого большого файла
                 Console.WriteLine("\n🎯 ПРОВЕРЯЕМ САМЫЙ БОЛЬШОЙ ФАЙЛ...");
                 var largestFile = foundFiles.GetMax(f => (float)f.Length);
 
@@ -170,7 +163,6 @@ class Program
                 Console.WriteLine($"Изменен: {largestFile.LastWriteTime:dd.MM.yyyy HH:mm}");
                 Console.WriteLine(new string('═', 60));
 
-                // Показываем топ-5 самых больших файлов
                 if (foundFiles.Count > 1)
                 {
                     Console.WriteLine("\n🏆 ТОП-5 САМЫХ БОЛЬШИХ ФАЙЛОВ:");
@@ -213,18 +205,14 @@ class Program
 
             string path = Console.ReadLine()?.Trim();
 
-            // Выход по пустому вводу
             if (string.IsNullOrEmpty(path))
                 return null;
 
-            // Проверка существования директории
             if (Directory.Exists(path))
                 return path;
 
-            // Предложения для пользователя
             Console.WriteLine($"\n❌ Директория '{path}' не существует.");
 
-            // Проверка корневого диска
             if (path.Length == 2 && path[1] == ':')
             {
                 string drive = path + "\\";
@@ -234,7 +222,6 @@ class Program
                 }
             }
 
-            // Предложение использовать текущую директорию
             Console.WriteLine("\nПримеры правильных путей:");
             Console.WriteLine($"• Текущая директория: {Environment.CurrentDirectory}");
             Console.WriteLine("• C:\\Users\\Имя\\Documents");
